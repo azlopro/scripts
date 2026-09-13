@@ -1,0 +1,42 @@
+# Copy to hardening.conf, review every value, then protect it with mode 0600.
+# The scripts refuse to apply changes while acknowledgements remain "no".
+
+SERVER_NAME="n0"
+SERVER_IPV4="192.168.1.74"
+MANAGEMENT_IPV4="192.168.1.169"
+NETWORK_INTERFACE="enp2s0"
+ADMIN_USER="nibba"
+
+# Both addresses must be reserved in DHCP before applying the network stage.
+USE_DHCP4="yes"
+# IPv6 remains enabled through router advertisements; no DHCPv6 lease is
+# requested unless the network is known to provide DHCPv6.
+USE_DHCP6="no"
+ACK_DHCP_RESERVATIONS="no"
+
+# fwknop Single Packet Authorization. The port does not need a firewall allow
+# rule because fwknopd captures the dropped packet through libpcap.
+SPA_UDP_PORT="62201"
+SPA_ACCESS_SECONDS="30"
+# Set to yes only after copying the generated client profile off the server.
+ACK_SPA_CLIENT_COPIED="no"
+
+# This laptop currently has an unencrypted root filesystem. Setting this to
+# yes records acceptance of that risk; it does not encrypt the disk.
+ACK_UNENCRYPTED_ROOT="no"
+
+# These are off by default because they can affect future workloads.
+DISABLE_WIFI="no"
+DISABLE_MODEM_MANAGER="no"
+REMOVE_ADMIN_FROM_LXD_GROUP="no"
+ALLOW_IP_FORWARDING="no"
+ALLOW_SSH_FORWARDING="no"
+
+# Optional remote syslog destination. Leave empty until a protected log host
+# exists. Example: REMOTE_LOG_HOST="logs.internal.example"
+REMOTE_LOG_HOST=""
+REMOTE_LOG_PORT="6514"
+
+# Rollback timers for changes that can interrupt remote access.
+NETWORK_ROLLBACK_SECONDS="300"
+ACCESS_ROLLBACK_SECONDS="900"
